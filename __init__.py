@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap5
+from flask_restful import Resource, Api
 
 
 from app.config import config_options
@@ -21,6 +22,8 @@ def create_app(config_name='prd'):
     migrate = Migrate(app, db)
 
     bootstrap = Bootstrap5(app)
+    api = Api(app)
+
 
 
     # we need db, migration
@@ -32,5 +35,14 @@ def create_app(config_name='prd'):
     from app.tracks import track_blueprint
     app.register_blueprint(track_blueprint)
 
+
+    ## generate urls for API
+    from app.students.api.views import  StudentList, StudentResource
+    api.add_resource(StudentList, '/api/students')
+    api.add_resource(StudentResource, '/api/students/<int:id>')
+
+    ####
+    from app.tracks.api.views import TrackList
+    api.add_resource(TrackList, '/api/tracks')
 
     return app

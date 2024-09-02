@@ -1,0 +1,4 @@
+
+# generate apis form flask
+# install flask_restful
+https://flask-restful.readthedocs.io/en/latest/
