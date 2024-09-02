@@ -22,5 +22,8 @@ def create_app(config_name='prd'):
     # app we need to register blueprint ?
     from app.students import  student_blueprint
     app.register_blueprint(student_blueprint)
+    from app.tracks import track_blueprint
+    app.register_blueprint(track_blueprint)
+
 
     return app

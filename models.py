@@ -13,6 +13,9 @@ class Track(db.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def show_url(self):
+        return url_for('tracks.show', id=self.id)
 
 class Student(db.Model):
     __tablename__ = 'students'
