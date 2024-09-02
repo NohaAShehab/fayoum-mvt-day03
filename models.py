@@ -24,7 +24,7 @@ class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     grade = db.Column(db.Integer, nullable=False)
-    image = db.Column(db.String(80), nullable=False)
+    image = db.Column(db.String(80))
     track_id = db.Column(db.Integer, db.ForeignKey('tracks.id'), nullable=True)
 
     def __str__(self):

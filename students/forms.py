@@ -2,15 +2,17 @@ from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap5
 
 from flask_wtf import FlaskForm, CSRFProtect
-from wtforms import StringField, SubmitField, IntegerField, SelectField
+from wtforms import StringField, SubmitField, IntegerField, SelectField, FileField
 from wtforms.validators import DataRequired, Length
 from app.models import Track, db
 
 
 class StudentForm(FlaskForm):
-    name = StringField("Name", validators=[DataRequired(), Length(10, 40)])
-    image= StringField("Image")
+    name = StringField("Name", validators=[DataRequired(), Length(2, 40)])
+    # image= StringField("Image")
+    image= FileField("Image", validators=[DataRequired()]) # this will include in form tag enctype=multi-part form ?
     grade = IntegerField("Grade")
+
     track_id = SelectField("Track", validators=[DataRequired()], choices=[])
     submit = SubmitField("Save new Student")
 

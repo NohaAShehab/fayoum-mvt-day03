@@ -13,6 +13,9 @@ def create_app(config_name='prd'):
     app.config.from_object(current_config)
     app.config['SQLALCHEMY_DATABASE_URI'] = current_config.SQLALCHEMY_DATABASE_URI
 
+    ## define place for uploads
+
+
     db.init_app(app)
 
     migrate = Migrate(app, db)

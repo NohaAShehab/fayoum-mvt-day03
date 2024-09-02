@@ -1,7 +1,9 @@
 from flask import request, render_template, redirect, url_for
+from werkzeug.utils import secure_filename
+
 from app.students import  student_blueprint
 from app.models import Student, db, Track
-
+import  os
 
 @student_blueprint.route('', endpoint='index')
 def index():
@@ -45,19 +47,30 @@ def delete(id):
 
 from app.students.forms import StudentForm
 
+
 ###
 @student_blueprint.route("/form/create", endpoint="form_create", methods=["POST", "GET"])
 def create_student():
     form  = StudentForm()
-    # form.track_id =  [(t.id, t.name) for t in Track.query.all()]
     if request.method=='POST':
         if form.validate_on_submit():
-            print(request.form)
-            student = Student(name=request.form["name"], grade=request.form["grade"],image=request.form["image"],
+            image_name= "pic1.png"
+            # print(request.form, request.files)
+            # get file on server --> static
+            if request.files.get('image'):
+                image= form.image.data
+                image_name =secure_filename(image.filename)
+                # save image to server
+                image.save(os.path.join('static/students/images/', image_name))
+                # then --> save image name in db ??
+
+            # save only image name
+            student = Student(name=request.form["name"], grade=request.form["grade"],image=image_name,
                               track_id=request.form["track_id"])
             db.session.add(student)
             db.session.commit()
             return redirect(student.show_url)
+
 
     return  render_template("students/forms/create.html", form=form)
 
