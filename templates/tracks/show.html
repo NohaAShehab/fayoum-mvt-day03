@@ -11,4 +11,9 @@
   </div>
 </div>
 
+<h1> Students in this track </h1>
+    {% for std in  track.students %}
+        <li> Hi <a href="{{std.show_url}}"> {{std.name}}</a> </li>
+    {% endfor %}
+
 {% endblock %}

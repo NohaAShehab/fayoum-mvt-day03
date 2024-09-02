@@ -9,6 +9,8 @@ class Track(db.Model):
     __tablename__ = 'tracks'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+    # define relation in model
+    students= db.relationship('Student', backref='track')
 
     def __str__(self):
         return self.name
@@ -23,6 +25,7 @@ class Student(db.Model):
     name = db.Column(db.String(80), nullable=False)
     grade = db.Column(db.Integer, nullable=False)
     image = db.Column(db.String(80), nullable=False)
+    track_id = db.Column(db.Integer, db.ForeignKey('tracks.id'), nullable=True)
 
     def __str__(self):
         return f"{self.name}"
