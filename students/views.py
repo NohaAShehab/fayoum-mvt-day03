@@ -49,32 +49,58 @@ from app.students.forms import StudentForm
 
 
 ###
+# @student_blueprint.route("/form/create", endpoint="form_create", methods=["POST", "GET"])
+# def create_student():
+#     form  = StudentForm()
+#     if request.method=='POST':
+#         if form.validate_on_submit():
+#             image_name= "pic1.png"
+#             # print(request.form, request.files)
+#             # get file on server --> static
+#             if request.files.get('image'):
+#                 image= form.image.data
+#                 image_name =secure_filename(image.filename)
+#                 # save image to server
+#                 image.save(os.path.join('static/students/images/', image_name))
+#                 # then --> save image name in db ??
+#
+#             # save only image name
+#             student = Student(name=request.form["name"], grade=request.form["grade"],image=image_name,
+#                               track_id=request.form["track_id"])
+#             db.session.add(student)
+#             db.session.commit()
+#             return redirect(student.show_url)
+#
+#
+#     return  render_template("students/forms/create.html", form=form)
+
+
 @student_blueprint.route("/form/create", endpoint="form_create", methods=["POST", "GET"])
 def create_student():
     form  = StudentForm()
     if request.method=='POST':
         if form.validate_on_submit():
-            image_name= "pic1.png"
-            # print(request.form, request.files)
-            # get file on server --> static
+            image_name=None
             if request.files.get('image'):
                 image= form.image.data
                 image_name =secure_filename(image.filename)
                 # save image to server
                 image.save(os.path.join('static/students/images/', image_name))
                 # then --> save image name in db ??
-
+            data= dict(request.form)
+            del data['csrf_token']
+            del data['submit']
             # save only image name
-            student = Student(name=request.form["name"], grade=request.form["grade"],image=image_name,
-                              track_id=request.form["track_id"])
+            data["image"]= image_name
+            print(request.form)
+            student= Student(**data)
             db.session.add(student)
             db.session.commit()
             return redirect(student.show_url)
 
 
+
     return  render_template("students/forms/create.html", form=form)
-
-
 
 
 
