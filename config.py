@@ -1,6 +1,11 @@
-
+import os
 class Config:
-    pass
+    # wtf forms --> needs secret key
+    # generate
+    SECRET_KEY = os.urandom(32) # generate random key -> length 32
+    @staticmethod
+    def init_app(app):
+        pass
 
 
 class DevelopmentConfig(Config):

@@ -43,9 +43,23 @@ def delete(id):
 
 
 
+from app.students.forms import StudentForm
 
+###
+@student_blueprint.route("/form/create", endpoint="form_create", methods=["POST", "GET"])
+def create_student():
+    form  = StudentForm()
+    # form.track_id =  [(t.id, t.name) for t in Track.query.all()]
+    if request.method=='POST':
+        if form.validate_on_submit():
+            print(request.form)
+            student = Student(name=request.form["name"], grade=request.form["grade"],image=request.form["image"],
+                              track_id=request.form["track_id"])
+            db.session.add(student)
+            db.session.commit()
+            return redirect(student.show_url)
 
-
+    return  render_template("students/forms/create.html", form=form)
 
 
 
